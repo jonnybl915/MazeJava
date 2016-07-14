@@ -1,6 +1,4 @@
 package com.theironyard.jdblack;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -11,11 +9,14 @@ public class Main {
 
     static Room[][] createRooms() {
         Room[][] rooms = new Room[SIZE][SIZE];
+
         for (int row = 0; row < SIZE; row ++) { //looping over two dimensional array
             for (int col = 0; col < SIZE; col ++) {
                 rooms[row][col] = new Room(row, col);
             }
         }
+
+
         return rooms;
     }
     static ArrayList<Room> possibleNeighbors(Room[][] rooms, int row, int col) {
@@ -57,6 +58,19 @@ public class Main {
         return null;
     }
 
+    static boolean createMaze(Room[][] rooms, Room room) {
+        room.wasVisited = true;
+        Room nextRoom = randomNeighbor(rooms, room.row, room.col);
+        if (nextRoom == null) {
+            return false;
+        }
+
+        tearDownWall(room, nextRoom);
+        while (createMaze(rooms, nextRoom));
+        return true;
+
+    }
+
     static void tearDownWall(Room oldRoom, Room newRoom) {
         // going up
         if (newRoom.row < oldRoom.row) {
@@ -76,23 +90,16 @@ public class Main {
         }
     }
 
-    static boolean createMaze(Room[][] rooms, Room room) {
-        room.wasVisited = true;
-        Room nextRoom = randomNeighbor(rooms, room.row, room.col);
-        if (nextRoom == null) {
-            return false;
-        }
-        tearDownWall(room, nextRoom);
-        while (createMaze(rooms, nextRoom));
-        return true;
-    }
+
 
     public static void main(String[] args) {
         Room [][] rooms = createRooms();
         createMaze(rooms, rooms[0][0]);
-
+        Room startRoom = rooms[0][0];
+        startRoom.setStartRoom(true);
 
         for (Room [] row : rooms) {
+            if (startRoom.row == 0)
             System.out.print(" _");
         }
         System.out.println();
