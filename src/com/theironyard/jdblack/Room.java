@@ -10,6 +10,7 @@ public class Room {
     boolean hasBottom = true;
     boolean hasRight = true;
     boolean startRoom = false;
+    boolean endRoom = false;
 
     public Room(int row, int col) {
         this.row = row;
@@ -62,5 +63,13 @@ public class Room {
 
     public void setStartRoom(boolean startRoom) {
         this.startRoom = startRoom;
+    }
+
+    public boolean isEndRoom() {
+        return endRoom;
+    }
+
+    public void setEndRoom(boolean endRoom) {
+        this.endRoom = endRoom;
     }
 }

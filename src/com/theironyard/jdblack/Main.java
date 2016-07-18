@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     static final int SIZE = 10;
+    static boolean isFirstDeadEnd = false;
 
     static Room[][] createRooms() {
         Room[][] rooms = new Room[SIZE][SIZE];
@@ -54,7 +55,6 @@ public class Main {
             int index = r.nextInt(neighbors.size()); //using neighbors.size as the maximum random value
             return neighbors.get(index);
         }
-
         return null;
     }
 
@@ -62,6 +62,9 @@ public class Main {
         room.wasVisited = true;
         Room nextRoom = randomNeighbor(rooms, room.row, room.col);
         if (nextRoom == null) {
+            if(!isFirstDeadEnd) {
+
+            }
             return false;
         }
 
@@ -96,18 +99,30 @@ public class Main {
         Room [][] rooms = createRooms();
         createMaze(rooms, rooms[0][0]);
         Room startRoom = rooms[0][0];
-        startRoom.setStartRoom(true);
-
         for (Room [] row : rooms) {
-            if (startRoom.row == 0)
+
             System.out.print(" _");
         }
         System.out.println();
         for (Room[] row : rooms) {
             System.out.print("|");
             for (Room room : row) {
-                System.out.print(room.hasBottom ? "_" : " ");
+                if (room.isStartRoom()){
+                    System.out.println("o");
+                }
+                else if(room.isEndRoom()){
+                    System.out.println("x");
+                }
+                else if(room.hasBottom) {
+                    System.out.print(room.hasBottom ? "_" : " ");
+
+                }
+                else {
+                    System.out.println(" ");
+
+                }
                 System.out.print(room.hasRight ? "|" : " ");
+
             }
             System.out.println();
         }
